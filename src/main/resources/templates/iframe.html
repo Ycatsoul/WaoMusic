@@ -1,0 +1,347 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:c="http://www.w3.org/1999/html">
+<head>
+    <title>index</title>
+</head>
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.js"></script>
+<!--<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>-->
+<!-- Bootstrap -->
+<link href="/css/bootstrap.css" rel="stylesheet">
+<link href="/css/player.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+<link rel='stylesheet prefetch' href="/css/normalize.css">
+<link rel="stylesheet" href="/css/style.css" media="screen" type="text/css" />
+<script type="text/javascript">
+</script>
+<script type="text/css">
+</script>
+<body style="overflow-y: hidden">
+<div>
+    <iframe src="/user/index" name="indexframe" frameborder="0" width="100%" height="1000px" scrolling="yes" ></iframe>
+</div>
+<input type="hidden" id="listid" name="listid">
+<a onclick="doplay()">play</a>
+<div id="jp_container_N" class="jp-video jp-video-270p jp-state-playing" role="application" aria-label="media player" style="left: 0px; height: 175px; bottom: 20px;">
+    <div class="jp-type-playlist">
+        <div id="jquery_jplayer_N" class="jp-jplayer" style="width: 90px; height: 90px;">
+           <!--<audio id="jp_audio_0"   title="" controls="controls"></audio>-->
+        </div>
+        <div class="jp-gui">
+            <div class="jp-interface">
+                <div class="jp-progress">
+                    <div class="jp-seek-bar" style="width: 100%;">
+                        <div class="jp-play-bar" style="overflow: hidden; width: 97.5219%;"></div>
+                    </div>
+                </div>
+                <div class="jp-current-time" role="timer" aria-label="time">04:11</div>
+                <div class="jp-duration" role="timer" aria-label="duration">04:17</div>
+                <div class="jp-controls-holder">
+                    <div class="jp-controls">
+                        <button class="jp-previous" role="button" tabindex="0">上一曲</button>
+                        <button class="jp-play" role="button" tabindex="0">播放</button>
+                        <button class="jp-next" role="button" tabindex="0">下一曲</button>
+                        <button class="jp-stop" role="button" tabindex="0">暂停</button>
+                    </div>
+                    <div class="jp-volume-controls">
+                        <button class="jp-mute" role="button" tabindex="0">静音</button>
+                        <button class="jp-volume-max" role="button" tabindex="0">最大音量</button>
+                        <div class="jp-volume-bar">
+                            <div class="jp-volume-bar-value" style="width: 10%;"></div>
+                        </div>
+                    </div>
+                    <div class="jp-toggles">
+                        <button class="jp-repeat" role="button" tabindex="0">重复</button>
+                        <button class="jp-shuffle" role="button" tabindex="0">随机</button>
+                        <!--<button class="jp-full-screen" role="button" tabindex="0">全屏</button>-->
+                    </div>
+                </div>
+                <div class="jp-details" style="display: none;">
+                    <div class="jp-title" aria-label="title">那英</div>
+                </div>
+            </div>
+        </div>
+        <div class="jp-playlist">
+            <div class="jp-playlist-box" style="height: 80px;">
+                <ul style="height: 1000px; display: block; top: 0px;">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--歌曲列表滚动条-->
+    <div class="scrollBar" style="display: block;">
+        <div class="bar" style="top: 0px;"></div>
+    </div>
+    <!--播放器展开隐藏按钮-->
+    <button type="button" class="folded_bt" title="点击收缩" id="btnfold" style="top: 52px;">
+        <span style="transform: rotate(180deg);"></span>
+    </button>
+    <div id="listRemove" style="display: block;"></div>
+    <!--移除全部歌曲按钮-->
+    <div id="listClose"></div>
+    <!--歌曲列表展开收缩按钮-->
+</div>
+<!-- 左侧播放器 结束-->
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+
+<!--播放器js-->
+<script src="/js/player.js"></script>
+<script src="/js/playlist.js"></script>
+<!--<script src="/js/player_database.js"></script>-->
+<script type="text/javascript">
+    var myPlaylist = new jPlayerPlaylist({
+            jPlayer: "#jquery_jplayer_N",
+            cssSelectorAncestor: "#jp_container_N"
+        },
+        [
+            /*{ title: "Fire", artist: "Said The Sky", mp3:"/music/mp3.do", poster: "http://p1.music.126.net/tg2zke_mrqwuOPlEIEUjGg==/18294773975127592.jpg?param=130y130"}
+            { title: "Save Me ", artist: "Original mix", mp3:"http://jq22com.qiniudn.com/saveme.mp3", poster: "images/se.jpg"},
+            { title: "默", artist: "那英", mp3:"http://music.163.com/song/media/outer/url?id=431795577.mp3 ", poster: "http://p1.music.126.net/OCGt5ln0lPPtPbVJ3VEKtA==/109951163020570422.jpg?param=130y130"},
+            { title: "Fire", artist: "Said The Sky", mp3:"http://music.163.com/song/media/outer/url?id=435289279.mp3", poster: "http://p1.music.126.net/tg2zke_mrqwuOPlEIEUjGg==/18294773975127592.jpg?param=130y130"},
+            { title: "法老", artist: "法老", mp3:"D:\\IdeaWorkplace\\MusicWeb\\target\\classes\\song\\MC法老 - 打破这墙1558966890318.mp3", poster: "http://p1.music.126.net/tg2zke_mrqwuOPlEIEUjGg==/18294773975127592.jpg?param=130y130"},
+            { title: "Fleur de lis", artist: "Noicybino", mp3: "http://music.163.com/song/media/outer/url?id=533079474.mp3", poster:"http://p1.music.126.net/C3C4vPOMsTd_vX9Ccww06Q==/109951163117390906.jpg?param=130y130"},
+            { title: "Dance, cherry blossoms!", artist: "Yuri akiyama", mp3: "http://music.163.com/song/media/outer/url?id=518291899.mp3 ", poster:"http://p1.music.126.net/AKhQSRL6HyZu4YwWg4Wi6A==/109951163060585255.jpg?param=130y130"},
+            { title: "Lost in Love", artist: "Bois LanYun", mp3: "http://music.163.com/song/media/outer/url?id=521597063.mp3", poster:"http://p1.music.126.net/6o_M9dSbYPRqKRmwY1bOGg==/109951163073262137.jpg?param=130y130"},
+            { title: "远すぎた空", artist: "Akito", mp3: "http://music.163.com/song/media/outer/url?id=357185.mp3", poster:"http://p1.music.126.net/7cYhniBuLvU3fvLjeRFeNw==/106652627910735.jpg?param=130y130"},
+            { title: "Whether", artist: " AniFace", mp3: "http://music.163.com/song/media/outer/url?id=515384791.mp3", poster:"http://p1.music.126.net/PzE3JrY7QVqFghK9gJN67A==/109951163050326398.jpg?param=130y130"},
+            { title: "Constellation Of Tatyana", artist: "Yakuro", mp3: "http://music.163.com/song/media/outer/url?id=28914253.mp3", poster:"http://p1.music.126.net/V7YrIWl2ALgg4QZTxD7_rw==/2937895071851575.jpg?param=130y130"},
+            { title: "Princess", artist: "α·Pav", mp3: "http://music.163.com/song/media/outer/url?id=357023.mp3", poster:"http://p1.music.126.net/ktIGtL8eCh6bmDf5a27tFQ==/93458488378205.jpg?param=130y130"},
+            { title: "Day by Day", artist: "Shirfine", mp3: "http://music.163.com/song/media/outer/url?id=27579054.mp3", poster:"http://p1.music.126.net/J6m3eJOw32G_wDim2tqloA==/5636096604060170.jpg?param=130y130"},
+            { title: "blue blossoms", artist: "久遠", mp3: "http://music.163.com/song/media/outer/url?id=803347.mp3", poster:"http://p1.music.126.net/j9u_wRtJMhlt64k-ZSUM3Q==/944480488305733.jpg?param=130y130"}*/
+        ],
+        {playlistOptions:{enableRemoveControls: true},
+            //muted:true,
+            //autoPlay:false,
+            swfPath: "js/",
+            supplied: "webmv, ogv, m4v, oga, mp3",
+            useStateClassSkin: true,
+            autoBlur: false,
+            smoothPlayBar: true,
+            keyEnabled: true,
+            audioFullScreen: true
+        });
+
+    function doplay(song,listid){
+       /* var  nowlistid=$("#listid").val();
+        //alert(nowlistid+"--"+listid);
+        if(nowlistid!==listid) {
+            //myPlaylist.remove();
+            //myPlaylist.add(song[0]);
+            myPlaylist.remove()
+            for (i = 0; i < song.length; i++) {
+                myPlaylist.add(song[i]);
+            };
+            //$("#listid").val(listid);
+            //myPlaylist.play(-1);
+        }else {
+            for (i = 0; i < song.length; i++) {
+                myPlaylist.add(song[i]);
+            };
+            myPlaylist.play(-1);
+            alert(nowlistid+"--"+listid);
+        }*/
+        //myPlaylist.remove();
+        for (i = 0; i < song.length; i++) {
+            myPlaylist.add(song[i]);
+        };
+           myPlaylist.play(-1);
+    };
+
+    //移除
+    $("#playlist-remove").click(function() {
+        myPlaylist.remove();		//（0 1 2 ... -2 -1）
+    });
+
+    $("#listRemove").click(function() {
+        myPlaylist.remove();
+    });
+
+    // 上一曲、下一曲
+
+    $("#playlist-next").click(function() {
+        myPlaylist.next();
+    });
+    $("#playlist-previous").click(function() {
+        myPlaylist.previous();
+    });
+
+    // 播放
+    $("#playlist-play").click(function() {
+        myPlaylist.play();
+    });
+
+    $("#playlist-play--2").click(function() {
+        myPlaylist.play(-2);
+    });
+    $("#playlist-play--1").click(function() {
+        myPlaylist.play(-1);
+    });
+    $("#playlist-play-0").click(function() {
+        myPlaylist.play(0);
+    });
+    $("#playlist-play-1").click(function() {
+        myPlaylist.play(1);
+    });
+    $("#playlist-play-2").click(function() {
+        myPlaylist.play(2);
+    });
+
+    // 暂停
+
+    $("#playlist-pause").click(function() {
+        myPlaylist.pause();
+    });
+
+
+
+    //是否自动播放
+
+    $("#playlist-option-autoPlay-true").click(function() {
+        myPlaylist.option("autoPlay", true);
+    });
+    $("#playlist-option-autoPlay-false").click(function() {
+        myPlaylist.option("autoPlay", false);
+    });
+
+
+
+
+    //播放器列表滚动条js------------------------------------------------------------------------------------------------
+    var $bar=$(".bar");
+    var $scrollBar=$(".scrollBar");
+    var $maxH = $scrollBar.innerHeight() - $bar.outerHeight();
+    var $ul=$(".jp-playlist ul");
+    var $li=$(".jp-playlist ul li");
+    var disY=0;
+    var iScale=0;
+    var iSpeed = 0;
+
+    $ul.height(1000);		//设置ul的高度
+
+    $bar.mousedown(function (event){
+        var event = event || window.event;
+        disY = event.clientY - $(this).position().top;
+        $(document).bind("mousemove",function (event){
+            var event = event || window.event;
+            var iH = event.clientY - disY;
+            iH <= 0 && (iH = 0);
+            iH >= $maxH && (iH = $maxH);
+            $bar.css({top : iH + "px"});
+            iScale = - iH/$maxH;
+            $ul.css({top:iScale*($ul.height()-$(".jp-playlist-box").height())+"px"});
+            return false;
+        });
+        $(document).bind("mouseup",function (){
+            $(document).unbind("mousemove");
+            $(document).unbind("mouseup");
+        });
+        return false;
+    });
+
+    //当鼠标移入，监听事件
+    $(".jp-playlist-box").mouseover(function(){
+        //鼠标滚轮
+        addHandler(this, "mousewheel", mouseWheel);//IE
+        addHandler(this, "DOMMouseScroll", mouseWheel);//标准
+        return false;
+    });
+    //绑定事件重写兼容
+    function addHandler(element, type, handler){
+        return element.addEventListener ? element.addEventListener(type, handler, false) :
+            element.attachEvent("on" + type, handler, false)
+    }
+    //鼠标滚轮事件
+    function mouseWheel(event){
+        var event = event || window.event;
+        if(event.wheelDelta) {//IE
+            iSpeed = event.wheelDelta > 0 ? -3 : 3;
+        }else if(event.detail) {//火孤
+            iSpeed = event.detail < 0 ? -3 : 3;
+        }
+        move();
+
+        //FF,绑定事件，阻止默认事件
+        if (event.preventDefault) {
+            event.preventDefault();
+        }
+    } ;
+    //滚轮 要执行的
+    function move(){
+        var iH=$bar.position().top;
+        iH=iH+iSpeed;
+        iH <= 0 && (iH = 0);
+        iH >= $maxH && (iH = $maxH);
+        $bar.css({top:iH+"px"});
+        iScale = - iH/$maxH;
+        $ul.css({top:iScale*($ul.height()-$(".jp-playlist-box").height())+"px"});
+        return false;
+    };
+    //播放器列表滚动条js 结束------------------------------------------------
+
+
+
+    //音乐播放器 收缩、展开----------------------------------------------
+    var fold=true;//标识
+
+    //页面加载时，播放器运动出来，延迟2秒，运动回去
+    $(".jp-video").animate({left:0},"slow",function(){
+        slideOut($(this));
+    }).delay(2000).animate({left:"-480px"},350,function(){
+        slideIn($(this));
+    });
+
+    //点击按钮运动出来，或运动回去
+    $("#btnfold").mouseover(function(){
+        if(fold){
+            $(".jp-video").animate({left:"-480px"},350,function(){
+                slideIn($(this));
+            });
+        }else{
+            $(".jp-video").animate({left:0},350,function(){
+                slideOut($(this));
+            });
+        }
+    });
+    //封装按钮背景切换1
+    function slideOut(obj){
+        $("#btnfold").attr({"title":"点击收缩"});
+        obj.find("span").css({"transform":"rotate(180deg)"});
+        obj.find("span").css({"MozTransform":"rotate(180deg) translateX(2px)"});
+        obj.find("span").css({"WebkitTransform":"rotate(180deg)"});
+        fold=true;
+    };
+    //封装按钮背景切换2
+    function slideIn(obj){
+        $("#btnfold").attr({"title":"点击展开"});
+        obj.find("span").css({"transform":"rotate(0deg)"});
+        obj.find("span").css({"MozTransform":"rotate(0deg) translateX(-2px)"});
+        obj.find("span").css({"WebkitTransform":"rotate(0deg)"});
+        fold=false;
+    };
+
+    //歌曲列表展开、收缩---------------------------------------------------
+    var iOpen=false;
+    $("#listClose").click(function(){
+        if(iOpen){
+            $(".jp-playlist-box").animate({height:0},100);
+            $("#btnfold").css({top:"5px"});
+            $("#listRemove").css({display:"none"});
+            $(".scrollBar").css({display:"none"});
+            $(".jp-video").animate({height:"94px",bottom:"20px"},100);
+            iOpen=false;
+        }else{
+            $(".jp-playlist-box").animate({height:"80px"},100);
+            $("#btnfold").css({top:"52px"});
+            $("#listRemove").css({display:"block"});
+            $(".scrollBar").css({display:"block"});
+            $(".jp-video").animate({height:"175px",bottom:"20px"},100);
+            iOpen=true;
+        }
+    });
+</script>
+<!--播放器js-->
+</body>
+</html>

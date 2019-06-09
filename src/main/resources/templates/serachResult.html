@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:c="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title><!-- Bootstrap -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/causoul_css.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel='stylesheet prefetch' href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css" />
+    <style>
+        body{ background:#eee;}
+        .total {
+            background:#FFFFFF;
+            margin-left: 200px;
+            margin-right: 200px;
+        }
+
+        pre{font-family: "Adobe Arabic"}
+        .panel-title{font-size:24px;margin-top: 12px;margin-bottom: 12px;font-weight: 700}
+        .panel{margin-top:66px }
+        .bs-example-modal-1g input{margin-top: 10px;margin-bottom: 10px}
+        .bs-example-modal-2g input{margin-top: 10px;margin-bottom: 10px}
+        .bs-example-modal-1g .form-control{width: 60%;}
+        .btn-group-sm,.btn-group-lg { float: left; margin: 3px}
+        <!--表格样式-->
+            {
+                border: 1px solid #007108;
+                border-collapse: collapse; /*边框的重叠 */
+                background-color: #000000;
+                font-size: 14px;
+            }
+        .datalist th{
+            border: none;
+            background-color: #a8a8a8;
+            font-weight: bold;
+            padding-top: 4px; padding-bottom: 4px; padding-left: 12px;padding-right: 12px;
+            text-align: left;
+        }
+        .datalist td{
+            text-align: left;
+            border: none;
+            padding-top: 4px; padding-bottom: 4px; padding-left: 10px;padding-right: 10px;
+        }
+        .datalist tr.altrow{
+            background-color: #eee;
+        }
+    </style>
+
+</head>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<!--歌单换行换色-->
+<script language="JavaScript">
+    $(function () {
+        $("table.datalist tr:nth-child(odd)").addClass("altrow");
+    })
+    //$(window.parent.document).find("body").css("overflow-y","scroll");
+</script>
+<body style="padding-top: 50px">
+<div class="total" style="margin-top: 50px">
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="height: 30px;">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand text-primary" href="/user/index">
+                <b>WAO Music</b>
+            </a>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="topFixedNavbar1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">My Music<span class="sr-only"></span></a></li>
+                    <li><a href="#">musician</a></li>
+                    <li><a href="#">发现音乐</a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">更多<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">客户端下载</a></li>
+                            <li><a href="#">用户中心</a></li>
+                            <li><a href="#">说唱音乐</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">排行榜</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">商城</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form action="/music/doserach" method="get" class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" name="word" class="form-control" placeholder="Serach Music">
+                    </div>
+                    <button type="submit" class="btn btn-inverse">Search</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active" th:if="${result.islogin}"><a href="#" ><spqn th:text="${session.user.userName}"></spqn></a></li>
+                    <li th:if="${result.islogin}"><a href="/user/Logout">Logout</a></li>
+                    <li th:unless="${result.islogin}"data-toggle="modal" data-target=".bs-example-modal-1g"><a href="#">Login</a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+         /.container-fluid
+        <div th:if="${session.user}">
+            <div class="container">
+                <nav style="float: left">
+                    <ul class="mcd-menu">
+                        <li> <a href="/user/iframe" class="active"> <i class="fa fa-home"></i> <strong>首页</strong> <small>sweet home</small> </a> </li>
+                        <li> <a href=""> <i class="fa fa-edit"></i> <strong>我的</strong>  </a>
+                        </li>
+                        <li> <a href="" > <i class="fa fa-gift"></i> <strong>收藏</strong></a>
+                            <ul>
+                                <li> <a href="#"><i class="fa fa-group"></i>歌单</a>
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-female"></i>添加</a></li>
+                                        <li> <a href="#"><i class="fa fa-male"></i>最爱的歌</a></li>
+                                        <li><a href="#"><i class="fa fa-female"></i>歌单1号</a></li>
+                                        <li><a href="#"><i class="fa fa-female"></i>歌单2号</a></li>
+                                        <li><a href="#"><i class="fa fa-female"></i>歌单3号</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="fa fa-globe"></i>专辑</a></li>
+                                <li><a href="#"><i class="fa fa-trophy"></i>艺人</a></li>
+                            </ul>
+                        </li>
+                        <li> <a href=""> <i class="fa fa-globe"></i> <strong>推荐</strong> </a> </li>
+                        <li> <a href=""> <i class="fa fa-picture-o"></i> <strong>Portfolio</strong> <small>sweet home</small> </a> </li>
+                        <li> <a href=""> <i class="fa fa-envelope-o"></i> <strong>Contacts</strong> <small>drop a line</small> </a> </li>
+                        <!--<li class="float"> <a class="search">
+                            <input type="text" value="search ...">
+                            <button><i class="fa fa-search"></i></button>
+                        </a> <a href="" class="search-mobile"> <i class="fa fa-search"></i> </a> </li>-->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </nav>
+    <!--model登陆模块-->
+
+    <div class="modal fade bs-example-modal-1g " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Welcome to future</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="login-form">
+                        <div class="login-header">
+                        </div>
+                        <form action="/user/login1" method="post" >
+                            <div >
+                                <label>用户名</label>
+                                <input type="text" class="uname form-control" id="userName" name="userName" autocomplete="off" spellcheck="false" required placeholder="账号">
+                            </div>
+                            <div >
+                                <label>密&#12288;码</label>
+                                <input type="password" class="upwd form-control" id="password" name="password" autocomplete="off" spellcheck="false" required placeholder="请输入密码">
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label><input type="checkbox"  name="checkname" id="checkid" onchange="changeval()" value="0">下次自动登录</label>
+                                    <div class="pull-right">
+                                        <a href="" class="text-right">忘记密码？</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-info btn-lg btn-block" >登    录</button>
+                            </div>
+                            <div class="form-group">
+                                <a href="javascript:" data-toggle="modal" data-target=".bs-example-modal-2g" class="register-btn btn btn-info btn-lg btn-block" role="button">注册新账号</a>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="login-form-mask"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" >
+        <div class="row" style="padding-top: 45px">
+            <div class=" col-md" >
+              <strong style="font-size: 2em">搜索结果</strong>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px">
+        <div class="col-md-12">
+            <table  class="table table-hover" summary="list of members in EE Studay" id="listTable">
+                <tr>
+                    <th width="150px">#</th>
+                    <th width="325.5" scope="col">歌曲标题</th>
+                    <th width="30%" scope="col">歌手</th>
+                    <th width="20%" scope="col">专辑</th>
+                </tr>
+                <tbody>
+                <tr th:each="song,songStat : ${songlist}">
+                    <td th:id="${song.id}"  th:text="${songStat.count}"></td>
+                    <td ><a onclick="doclick()" th:text="${song.songName}"></a></td>
+                    <td th:text="${song.songCreator.userName}"></td>
+                    <div th:if="${song.isList}==1">
+                        <td th:text="${song.belongList.listName}"></td>
+                    </div>
+                    <!--<td th:text="${#dates.format(song.createTime,'yyyy-MM-dd')}"></td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    function doclick()
+    {
+        var td = event.srcElement; // 通过event.srcElement 获取激活事件的对象 td
+        var row=td.parentElement.parentElement.rowIndex
+        playoneinlist(row);
+    }
+
+    function playallinlist() {
+        var tab=document.getElementById("listTable");
+        var rows=tab.rows;
+        var listid=$("#listid").val();
+        var list=new Array();
+        var temp;
+        for(var i=1;i<rows.length;i++){
+            temp={ title: rows[i].cells[1].textContent,
+                artist: rows[i].cells[2].textContent,
+                mp3: "/music/getmp3?id="+rows[i].cells[0].id,
+                poster: ""};
+            list.push(temp);
+        }
+        var s=list.toString();
+        console.info(s);
+        window.parent.doplay(list,listid);
+
+    }
+    function playoneinlist(r) {
+        var tab=document.getElementById("listTable");
+        var rows=tab.rows;
+        var listid=$("#listid").val();
+        var s=[{ title: rows[r].cells[1].textContent,
+            artist: rows[r].cells[2].textContent,
+            //mp3:"http://music.163.com/song/media/outer/url?id=86369.mp3",
+            mp3: "/music/getmp3?id="+rows[r].cells[0].id,
+            poster: "/music/getimage?id="+rows[r].cells[0].id}
+        ];
+        window.parent.doplay(s,listid);
+    };
+</script>
+</html>
